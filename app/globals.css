@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #0f0c0b;
+  --ink-soft: #1c1714;
+  --cream: #f3ebe2;
+  --cream-muted: rgba(243, 235, 226, 0.72);
+  --cafe-deep: #1a0f0b;
+  --cafe-espresso: #3b2418;
+  --cafe-gold: #c4a574;
+  --home-deep: #12100f;
+  --home-charcoal: #2a2421;
+  --home-rosegold: #c4897b;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-cream: var(--cream);
+  --color-cream-muted: var(--cream-muted);
+  --color-cafe-deep: var(--cafe-deep);
+  --color-cafe-espresso: var(--cafe-espresso);
+  --color-cafe-gold: var(--cafe-gold);
+  --color-home-deep: var(--home-deep);
+  --color-home-charcoal: var(--home-charcoal);
+  --color-home-rosegold: var(--home-rosegold);
+  --font-display: var(--font-schietto-display);
+  --font-body: var(--font-schietto-body);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--font-schietto-body), system-ui, sans-serif;
+}
+
+::selection {
+  background: rgba(196, 165, 116, 0.35);
+  color: var(--cream);
+}
+
+@keyframes brandIn {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes footerIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-brand-in {
+  opacity: 0;
+  animation: brandIn 0.9s ease-out 0.1s forwards;
+}
+
+.animate-panel-in {
+  opacity: 0;
+  animation: panelIn 0.95s ease-out forwards;
+}
+
+.animate-panel-in-delay {
+  opacity: 0;
+  animation: panelIn 0.95s ease-out 0.18s forwards;
+}
+
+.animate-footer-in {
+  opacity: 0;
+  animation: footerIn 0.8s ease-out 0.55s forwards;
+}
+
+.portal-atmosphere {
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(59, 36, 24, 0.45), transparent 55%),
+    radial-gradient(ellipse 70% 45% at 85% 10%, rgba(196, 137, 123, 0.12), transparent 50%),
+    linear-gradient(165deg, #0f0c0b 0%, #1a1411 48%, #0c0a09 100%);
+}
+
+.portal-grain {
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(243, 235, 226, 0.035) 0.6px, transparent 0.7px),
+    radial-gradient(circle at 72% 48%, rgba(196, 165, 116, 0.03) 0.5px, transparent 0.6px),
+    radial-gradient(circle at 40% 78%, rgba(243, 235, 226, 0.025) 0.55px, transparent 0.65px);
+  background-size: 3px 3px, 4px 4px, 5px 5px;
+}
