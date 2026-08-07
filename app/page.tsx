@@ -9,7 +9,7 @@ export default function Home() {
 
       <BrandHeader />
 
-      <div className="relative z-10 grid min-h-dvh grid-cols-1 pt-36 pb-14 md:grid-cols-[1.08fr_0.92fr] md:pt-0 md:pb-0">
+      <div className="relative z-10 grid min-h-dvh grid-cols-1 pt-36 pb-14 md:grid-cols-2 md:pt-0 md:pb-0">
         <DestinationPanel
           href="https://cafe.schietto.com.br"
           title="Caffè Schiètto"
