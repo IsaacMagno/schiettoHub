@@ -1,16 +1,17 @@
 @import "tailwindcss";
 
+/* Cores da marca: marrom cacau e dourado (as mesmas do café e da loja). */
 :root {
-  --ink: #0f0c0b;
-  --ink-soft: #1c1714;
-  --cream: #f3ebe2;
-  --cream-muted: rgba(243, 235, 226, 0.72);
-  --cafe-deep: #1a0f0b;
-  --cafe-espresso: #3b2418;
-  --cafe-gold: #c4a574;
-  --home-deep: #12100f;
-  --home-charcoal: #2a2421;
-  --home-rosegold: #c4897b;
+  --ink: #140806;
+  --ink-soft: #1e0b06;
+  --cream: #f5ecd7;
+  --cream-muted: rgba(245, 236, 215, 0.72);
+  --cafe-deep: #1e0b06;
+  --cafe-espresso: #34130c;
+  --cafe-gold: #d08f32;
+  --home-deep: #170a06;
+  --home-charcoal: #2c150d;
+  --home-gold: #e0b46a;
 }
 
 @theme inline {
@@ -23,7 +24,7 @@
   --color-cafe-gold: var(--cafe-gold);
   --color-home-deep: var(--home-deep);
   --color-home-charcoal: var(--home-charcoal);
-  --color-home-rosegold: var(--home-rosegold);
+  --color-home-gold: var(--home-gold);
   --font-display: var(--font-schietto-display);
   --font-body: var(--font-schietto-body);
 }
@@ -39,7 +40,7 @@ body {
 }
 
 ::selection {
-  background: rgba(196, 165, 116, 0.35);
+  background: rgba(208, 143, 50, 0.4);
   color: var(--cream);
 }
 
@@ -65,7 +66,7 @@ body {
   }
 }
 
-@keyframes footerIn {
+@keyframes fadeIn {
   from {
     opacity: 0;
   }
@@ -91,21 +92,156 @@ body {
 
 .animate-footer-in {
   opacity: 0;
-  animation: footerIn 0.8s ease-out 0.55s forwards;
+  animation: fadeIn 0.8s ease-out 0.55s forwards;
 }
 
 .portal-atmosphere {
   background:
-    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(59, 36, 24, 0.45), transparent 55%),
-    radial-gradient(ellipse 70% 45% at 85% 10%, rgba(196, 137, 123, 0.12), transparent 50%),
-    linear-gradient(165deg, #0f0c0b 0%, #1a1411 48%, #0c0a09 100%);
+    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(52, 19, 12, 0.6), transparent 55%),
+    radial-gradient(ellipse 70% 45% at 85% 10%, rgba(208, 143, 50, 0.1), transparent 50%),
+    linear-gradient(165deg, #140806 0%, #1e0b06 48%, #0f0604 100%);
 }
 
 .portal-grain {
   pointer-events: none;
   background-image:
-    radial-gradient(circle at 18% 22%, rgba(243, 235, 226, 0.035) 0.6px, transparent 0.7px),
-    radial-gradient(circle at 72% 48%, rgba(196, 165, 116, 0.03) 0.5px, transparent 0.6px),
-    radial-gradient(circle at 40% 78%, rgba(243, 235, 226, 0.025) 0.55px, transparent 0.65px);
+    radial-gradient(circle at 18% 22%, rgba(245, 236, 215, 0.035) 0.6px, transparent 0.7px),
+    radial-gradient(circle at 72% 48%, rgba(208, 143, 50, 0.03) 0.5px, transparent 0.6px),
+    radial-gradient(circle at 40% 78%, rgba(245, 236, 215, 0.025) 0.55px, transparent 0.65px);
   background-size: 3px 3px, 4px 4px, 5px 5px;
+}
+
+/* ───────── Tela de escolha em movimento ───────── */
+
+/* O painel que recebe o mouse (ou o foco do teclado) cresce; o outro recua. */
+.portal-panel {
+  flex: 1 1 0%;
+  min-width: 0;
+  transition:
+    flex-grow 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.6s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .portal-split:hover .portal-panel:hover,
+  .portal-split:focus-within .portal-panel:focus-visible {
+    flex-grow: 1.45;
+  }
+
+  .portal-split:hover .portal-panel:not(:hover) {
+    filter: brightness(0.6) saturate(0.85);
+  }
+}
+
+/* Risco dourado entre os dois painéis, que se desenha de cima para baixo. */
+@keyframes seamDraw {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.portal-seam {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(208, 143, 50, 0.75) 22%,
+    rgba(208, 143, 50, 0.75) 78%,
+    transparent
+  );
+  transform-origin: top;
+  animation: seamDraw 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+
+/* A foto respira devagar... */
+@keyframes panelDrift {
+  from {
+    transform: scale(1.03);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+.panel-drift {
+  animation: panelDrift 16s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* ...e acompanha o mouse de leve. */
+.panel-mouse {
+  transform: translate3d(calc(var(--mx, 0) * -22px), calc(var(--my, 0) * -14px), 0);
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Título que sobe letra por letra. */
+@keyframes letterRise {
+  from {
+    opacity: 0;
+    transform: translateY(0.7em) rotate(4deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+}
+
+.rise-letter {
+  display: inline-block;
+  animation: letterRise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(0.45s + var(--i, 0) * 0.045s);
+}
+
+@keyframes lineDraw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.panel-line {
+  animation: lineDraw 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+
+.panel-copy {
+  animation: panelIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.95s both;
+}
+
+/*
+ * Quem pede menos movimento no sistema vê só as entradas suaves (esmaecer).
+ * Para ver tudo mesmo assim: abrir o site com ?movimento=completo.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html:not(.motion-full) {
+    scroll-behavior: auto;
+  }
+
+  html:not(.motion-full) .panel-drift,
+  html:not(.motion-full) .portal-seam,
+  html:not(.motion-full) .panel-line {
+    animation: none;
+  }
+
+  html:not(.motion-full) .panel-mouse {
+    transform: none;
+  }
+
+  html:not(.motion-full) .animate-brand-in,
+  html:not(.motion-full) .animate-panel-in,
+  html:not(.motion-full) .animate-panel-in-delay,
+  html:not(.motion-full) .rise-letter,
+  html:not(.motion-full) .panel-copy {
+    animation-name: fadeIn;
+  }
+
+  html:not(.motion-full) .portal-panel {
+    transition: none;
+  }
 }

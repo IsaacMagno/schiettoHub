@@ -16,6 +16,12 @@ const bodyFont = Outfit({
   display: "swap",
 });
 
+/**
+ * Roda antes da primeira pintura: liga `motion-full` quando a URL traz
+ * ?movimento=completo (e lembra disso até fechar a aba); ?movimento=padrao desfaz.
+ */
+const MOTION_BOOT_SCRIPT = `try{var k='schietto-movimento',q=location.search;if(/[?&]movimento=completo/.test(q))sessionStorage.setItem(k,'1');if(/[?&]movimento=padrao/.test(q))sessionStorage.removeItem(k);if(sessionStorage.getItem(k))document.documentElement.classList.add('motion-full')}catch(e){}`;
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://schietto.com.br"),
   title: "Schiètto | Café e Home Decor em Pedreira, SP",
@@ -67,7 +73,11 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${displayFont.variable} ${bodyFont.variable} h-full`}
     >
-      <body className="font-body min-h-full antialiased">{children}</body>
+      <body className="font-body min-h-full antialiased">
+        {/* ?movimento=completo liga todas as animações antes da primeira pintura */}
+        <script dangerouslySetInnerHTML={{ __html: MOTION_BOOT_SCRIPT }} />
+        {children}
+      </body>
     </html>
   );
 }
