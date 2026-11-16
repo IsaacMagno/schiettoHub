@@ -18,14 +18,14 @@ const accentStyles = {
     line: "bg-cafe-gold/45",
     frame: "border-cafe-gold/40",
     label: "text-cafe-gold",
-    cta: "border-cafe-gold/55 group-active:border-cafe-gold group-active:bg-cafe-deep/60",
+    cta: "border-cafe-gold/60 group-active:border-cafe-gold group-active:bg-cafe-gold group-active:text-ink",
     imageClass: "object-center",
   },
   home: {
-    line: "bg-home-rosegold/45",
-    frame: "border-home-rosegold/40",
-    label: "text-home-rosegold",
-    cta: "border-home-rosegold/55 group-active:border-home-rosegold group-active:bg-home-deep/60",
+    line: "bg-home-gold/45",
+    frame: "border-home-gold/40",
+    label: "text-home-gold",
+    cta: "border-home-gold/60 group-active:border-home-gold group-active:bg-home-gold group-active:text-ink",
     imageClass: "object-[center_32%]",
   },
 } as const;
@@ -51,7 +51,7 @@ export function MobileDestinationCard({
       aria-label={`${title} — ${cta}`}
     >
       <div className="mb-4 flex items-center gap-4">
-        <span className="font-body text-[0.62rem] tracking-[0.32em] text-cream/40 uppercase">
+        <span className="font-body text-[0.62rem] tracking-[0.32em] text-cream/55 uppercase">
           {index}
         </span>
         <span className={`h-px flex-1 ${styles.line}`} aria-hidden />
@@ -63,13 +63,17 @@ export function MobileDestinationCard({
       </div>
 
       <div className="relative aspect-[4/3] overflow-hidden">
-        <Image
-          src={imageSrc}
-          alt={imageAlt}
-          fill
-          sizes="100vw"
-          className={`object-cover transition-transform duration-[1.1s] ease-out group-active:scale-105 ${styles.imageClass}`}
-        />
+        {/* A foto respira devagar para a tela não ficar parada no celular */}
+        <div className="panel-drift absolute inset-0">
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            fill
+            priority
+            sizes="100vw"
+            className={`object-cover transition-transform duration-[1.1s] ease-out group-active:scale-105 ${styles.imageClass}`}
+          />
+        </div>
         <div
           className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/45 via-transparent to-transparent"
           aria-hidden
@@ -84,11 +88,11 @@ export function MobileDestinationCard({
         <h2 className="font-display text-[2rem] leading-tight font-medium tracking-wide text-cream">
           {title}
         </h2>
-        <p className="font-body mt-2.5 max-w-sm text-sm leading-relaxed text-cream/70">
+        <p className="font-body mt-2.5 max-w-sm text-sm leading-relaxed text-cream/75">
           {subtitle}
         </p>
         <span
-          className={`font-body mt-6 inline-flex w-fit items-center gap-3 border px-5 py-2.5 text-xs tracking-[0.22em] text-cream uppercase transition-colors duration-300 ${styles.cta}`}
+          className={`font-body mt-6 inline-flex w-fit items-center gap-3 border px-5 py-3 text-xs tracking-[0.22em] text-cream uppercase transition-colors duration-300 ${styles.cta}`}
         >
           {cta}
           <span aria-hidden>→</span>
